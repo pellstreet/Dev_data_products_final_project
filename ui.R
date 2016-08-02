@@ -44,7 +44,7 @@ shinyUI(navbarPage("",
          h5('This app was created as part of the final project for the Coursera Developing Data Products class from Johns Hopkins University. 
             As part of this assignement a web app was created to predict an outcome using a number of predictors from a known dataset.
             The dataset used for this prediction is the GaltonFamilies dataset.
-            Further documentation related to this app can be found here:')
+            Further documentation related to this app can be found here: https://github.com/pellstreet/Dev_data_products_final_project') 
       )
     )
   )

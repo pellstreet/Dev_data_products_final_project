@@ -1,0 +1,86 @@
+---
+output: pdf_document
+---
+Developing Data Products - Shiny App Course Project 
+======================================
+
+####Emanuele Pellichero 7/29/2016
+
+##Child's Adult Height Predictor 
+
+
+### 1. Introduction
+
+This shiny app was created for the final project of the Coursera Developing Data Products class from Johns Hopkins University. As part of this assignement a web app was created to predict an outcome using a number of predictors from a known dataset.
+
+This Application predicts the adult's height of a child based on the height of the parents and the gender of the child. The predictor function is based on the Galton dataset,  which is a dataset that was used by Galton in 1885 to study the correlation between the parent\'s height and their children.
+    
+
+### 2. The GaltonFamilies dataset
+
+The Galton dataset contains data from 934 adult children born to 205 fathers and mothers. The dataset has 8 variables,
+
+* *family*: family ID, a factor with levels 001-204
+
+* *father*: height of father
+
+* *mother*: height of mother
+
+* *midparentHeight*: mid-parent height, calculated as (father + 1.08mother)/2
+
+* *children*: number of children in this family
+
+* *childNum*: number of this child within family. Children are listed in decreasing order of height for boys followed by girls
+
+* *child gender*: a factor with levels female male
+
+* *childHeight*: height of child
+
+here below is the database summary:
+
+```{r, echo=FALSE,message=FALSE, comment=FALSE,warning=FALSE}
+
+library(HistData)
+
+data("GaltonFamilies")
+
+summary(GaltonFamilies)
+```
+
+### 3. The predictor function
+
+The child's adult height was predicted by fitting a linear regression model to the Galton dataset, using *childHeight* as the outcome and *midparentHeight* and *gender* as predictors. Other variables from the dataset were omitted in the linear regression as they appeared to not have a positive effect on the accuracy of the prediction  (See Fig.2 below) The regression model is shown below:
+
+```{r, message=FALSE, comment=FALSE,warning=FALSE}
+
+fit <- lm(childHeight ~ midparentHeight + gender,data=GaltonFamilies)
+
+summary(fit)
+```
+
+**Figure 1** - Chart with the regression model:
+
+
+```{r, echo=FALSE, message=FALSE, comment=FALSE,warning=FALSE}
+library(ggplot2)
+
+ggplot(GaltonFamilies, aes(x = midparentHeight, y = childHeight, colour=gender)) + 
+  geom_point() +
+  geom_smooth(method = "lm")
+
+```
+
+**Figure 2** - Pair Wise plot for the variables in the dataset. *family* was omitted as it is just an ID and *father* and *mother* were omitted as they  are obviously cooreleted to *midparentHeight*.
+
+```{r, echo=FALSE, message=FALSE, comment=FALSE,warning=FALSE}
+library(GGally)
+
+ggpairs(GaltonFamilies,columns=4:8)
+
+```
+
+
+### 4. The shiny app
+
+####*The shiny app is available [here](https://pell.shinyapps.io/Dev_data_products_final_project/)*
+
